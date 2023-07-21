@@ -78,7 +78,7 @@ const Home = () => {
                 <div className="flex flex-row my-32">
                     <div className="my-9">
                         {time.map((item, i) => (
-                            <div key={i} className="w-32 h-14">
+                            <div key={i} className="w-24 h-14 text-right">
                                 {item}
                             </div>
                         ))}
@@ -86,17 +86,24 @@ const Home = () => {
                     <div className="flex flex-row">
                         {data.map((item, i) => (
                             <div key={i} className="mx-7 relative">
-                                <div className="w-24 h-14 bg-black text-white rounded-xl shadow-xl rotate-90 text-center py-3">
+                                <div className="w-24 h-14 bg-black text-white rounded-xl shadow-xl rotate-90 text-center py-4">
                                     {item.dayName}
                                 </div>
                                 <div className="mt-4">
                                     {Object.keys(item.dayData).map((key, i) => (
                                         <div
                                             key={i}
-                                            className="relative flex items-center justify-end ml-10 w-24 h-14 pl-4 text-right border-l-4 border-black"
+                                            className="relative flex items-center justify-end ml-11 w-20 h-14 pl-4 text-right border-l-4 border-black"
                                         >
                                             {item.dayData[key]}
-                                            <div className="absolute top-1/2 left-0 -ml-2 transform -translate-y-1/2 bg-black w-4 h-4 rounded-full"></div>
+                                            <div
+                                                className={`absolute top-1/2 left-0 z-10 -ml-[10px] transform -translate-y-1/2 w-4 h-4 rounded-full 
+                                            ${
+                                                i === 0
+                                                    ? "bg-green-500"
+                                                    : "bg-black"
+                                            }`}
+                                            ></div>
                                         </div>
                                     ))}
                                 </div>
