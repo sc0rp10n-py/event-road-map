@@ -6,11 +6,11 @@ export default function App({ Component, pageProps }) {
     return (
         <>
             <div className="flex flex-col min-h-screen">
-                <Nav />
+                {/* <Nav /> */}
                 <main className="flex-grow">
                     <Component {...pageProps} />
                 </main>
-                <Footer className="mt-auto" />
+                {/* <Footer className="mt-auto" /> */}
             </div>
         </>
     );

@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 
 const Home = () => {
+    // const [currentTime, setCurrentTime] = useState("");
+    // const [currentTimeSlot, setCurrentTimeSlot] = useState("");
+
     const data = [
         {
             id: 1,
@@ -61,7 +64,6 @@ const Home = () => {
     ];
 
     const time = [
-        "",
         "9:00 AM",
         "11:00 AM",
         "12:00 PM",
@@ -72,31 +74,81 @@ const Home = () => {
         "6:00 PM",
     ];
 
+    useEffect(() => {
+        // Simulate real-time behavior by updating the currentTimeSlot every minute
+        const interval = setInterval(() => {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+
+            // Convert the current time to the format used in the time array
+            const formattedTime = `${hours % 12 || 12}:${
+                minutes < 10 ? "0" : ""
+            }${minutes} ${hours >= 12 ? "PM" : "AM"}`;
+
+            // Find the corresponding time slot based on the current time
+            let currentSlot = "";
+            for (let i = 1; i < time.length; i++) {
+                if (time[i] === formattedTime) {
+                    currentSlot = time[i];
+                    break;
+                } else if (
+                    time[i - 1] < formattedTime &&
+                    formattedTime < time[i]
+                ) {
+                    currentSlot = time[i - 1];
+                    break;
+                }
+            }
+
+            setCurrentTimeSlot(currentSlot);
+        }, 60000); // Update every minute (60000 milliseconds)
+
+        // Clear the interval when the component unmounts
+        return () => clearInterval(interval);
+    }, []);
+
     return (
         <>
             <div className="container mx-auto flex flex-row justify-center items-center">
                 <div className="flex flex-row my-32">
-                    <div className="my-9">
+                    <div className="">
                         {time.map((item, i) => (
-                            <div key={i} className="w-32 h-14">
+                            <div
+                                key={i}
+                                className={`w-32 h-14 ${
+                                    item === currentTimeSlot
+                                        ? "bg-green-300"
+                                        : "bg-yellow-200"
+                                }`}
+                            >
                                 {item}
                             </div>
                         ))}
                     </div>
                     <div className="flex flex-row">
                         {data.map((item, i) => (
-                            <div key={i} className="mx-7 relative">
-                                <div className="w-24 h-14 bg-black text-white rounded-xl shadow-xl rotate-90 text-center py-3">
+                            <div key={i} className="mx-7">
+                                <div
+                                    className={`w-14 h-14 bg-black text-white rotate-90 text-center py-3 ${
+                                        item.dayData[currentTimeSlot]
+                                            ? "bg-green-500"
+                                            : "bg-yellow-300"
+                                    }`}
+                                >
                                     {item.dayName}
                                 </div>
-                                <div className="mt-4">
+                                <div className="">
                                     {Object.keys(item.dayData).map((key, i) => (
                                         <div
                                             key={i}
-                                            className="relative flex items-center justify-end ml-10 w-24 h-14 pl-4 text-right border-l-4 border-black"
+                                            className={`w-24 h-14 text-right ${
+                                                key === currentTimeSlot
+                                                    ? "bg-green-100"
+                                                    : "bg-yellow-50"
+                                            }`}
                                         >
                                             {item.dayData[key]}
-                                            <div className="absolute top-1/2 left-0 -ml-2 transform -translate-y-1/2 bg-black w-4 h-4 rounded-full"></div>
                                         </div>
                                     ))}
                                 </div>
